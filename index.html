@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Todo App</title>
+    <!-- Import Styles -->
+    <link rel="stylesheet" href="./styles.css" />
+    <!-- Import Vue.js -->
+    <script src="https://unpkg.com/vue@3.0.11/dist/vue.global.js"></script>
+  </head>
+  <body>
+    <div id="app">
+        <h1> To-Do List</h1>
+        <input v-model="newTask" placeholder="Add a new task" @keyup.enter="addTask" />
+        <button id="addtask" @click="addTask">Add Task</button>
+    
+        <div id="filter-container">
+        <label>Filter </label>
+          <select v-model="selectedFilter" @change="toggleFilter(selectedFilter)">
+            <option disabled value="">Please select one</option>
+            <option value="all">Show all</option>
+            <option value="completed">Show completed</option>
+            <option value="uncompleted">Show uncompleted</option>
+        </select>    
+        </div>
+        <ul v-if="selectedFilter==='all'">
+          <li v-for="(task, index) in tasks" :key="index">
+            <input type="checkbox" v-model="task.completed" @change="toggleComplete(index,task.completed)" />
+    
+            <span v-if="!task.isEditing" :class="{ 'completed-task': task.completed }">{{ task.text }}</span>
+            <input v-else v-model="task.text" @keyup.enter="saveTask(task,index)" @blur="saveTask(task)" />
+    
+            <button v-if="!task.isEditing" @click="editTask(task)">Edit</button>
+            <button @click="removeTask(index)">Delete</button>
+          </li>
+        </ul>
+    
+       <ul v-else>
+          <li v-for="(task, index) in filteredTasks" :key="index">
+            <input type="checkbox" v-model="task.completed" @change="toggleComplete(index,task.completed)" />
+    
+            <span v-if="!task.isEditing" :class="{ 'completed-task': task.completed }">{{ task.text }}</span>
+            <input v-else v-model="task.text" @keyup.enter="saveTask(task,index)" @blur="saveTask(task)" />
+    
+            <button v-if="!task.isEditing" @click="editTask(task)">Edit</button>
+            <button @click="removeTask(index)">Delete</button>
+          </li>
+        </ul>
+      </div>
+
+    <!-- Import App -->
+    <script src="./app.js"></script>
+
+    <!-- Mount App -->
+    <script>
+      const mountedApp = app.mount('#app')
+    </script>
+  </body>
+</html>
