@@ -23,19 +23,9 @@
             <option value="uncompleted">Show uncompleted</option>
         </select>    
         </div>
-        <ul v-if="selectedFilter==='all'">
-          <li v-for="(task, index) in tasks" :key="index">
-            <input type="checkbox" v-model="task.completed" @change="toggleComplete(index,task.completed)" />
     
-            <span v-if="!task.isEditing" :class="{ 'completed-task': task.completed }">{{ task.text }}</span>
-            <input v-else v-model="task.text" @keyup.enter="saveTask(task,index)" @blur="saveTask(task)" />
     
-            <button v-if="!task.isEditing" @click="editTask(task)">Edit</button>
-            <button @click="removeTask(index)">Delete</button>
-          </li>
-        </ul>
-    
-       <ul v-else>
+       <ul>
           <li v-for="(task, index) in filteredTasks" :key="index">
             <input type="checkbox" v-model="task.completed" @change="toggleComplete(index,task.completed)" />
     
